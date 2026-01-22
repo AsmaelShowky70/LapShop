@@ -1,0 +1,354 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LapShop</name>
+    </assembly>
+    <members>
+        <member name="T:LapShop.ApiControllers.ItemsController">
+            <summary>
+            ItemsController - API Controller
+            يوفر endpoints لإدارة المنتجات (الحصول على المنتجات، البحث، الإضافة، الحذف)
+            يُستخدم من قبل التطبيق الأمامي (Frontend) للحصول على بيانات المنتجات
+            </summary>
+        </member>
+        <member name="F:LapShop.ApiControllers.ItemsController._itemService">
+            <summary>
+            خدمة إدارة المنتجات - Business Logic Layer
+            </summary>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.#ctor(LapShop.Bl.IItems)">
+            <summary>
+            تهيئة الـ API Controller مع خدمة المنتجات
+            </summary>
+            <param name="itemService">خدمة إدارة المنتجات من الـ DI Container</param>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.Get">
+            <summary>
+            الحصول على جميع المنتجات من قاعدة البيانات
+            </summary>
+            <returns>ApiResponse يحتوي على قائمة جميع المنتجات</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.Get(System.Int32)">
+            <summary>
+            الحصول على منتج واحد برقم معرّفه
+            </summary>
+            <param name="id">رقم معرّف المنتج</param>
+            <returns>ApiResponse يحتوي على بيانات المنتج</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.GetByCategoryId(System.Int32)">
+            <summary>
+            الحصول على جميع المنتجات في فئة معينة
+            </summary>
+            <param name="categoryId">رقم معرّف الفئة</param>
+            <returns>ApiResponse يحتوي على المنتجات التابعة للفئة</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.Post(LapShop.Models.TbItem)">
+            <summary>
+            إضافة أو تعديل منتج
+            </summary>
+            <param name="item">بيانات المنتج</param>
+            <returns>ApiResponse يؤكد إتمام العملية</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.ItemsController.Delete(System.Int32)">
+            <summary>
+            حذف منتج برقم معرّفه
+            </summary>
+            <param name="id">رقم معرّف المنتج المراد حذفه</param>
+        </member>
+        <member name="T:LapShop.Controllers.HomeController">
+            <summary>
+            HomeController - يتعامل مع الصفحة الرئيسية والتنقل العام
+            يحضر البيانات المختلفة مثل المنتجات والفئات والمنزلقات (Sliders)
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.HomeController._itemService">
+            <summary>
+            خدمة إدارة المنتجات
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.HomeController._sliderService">
+            <summary>
+            خدمة إدارة المنزلقات (Sliders)
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.HomeController._categoryService">
+            <summary>
+            خدمة إدارة الفئات
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.HomeController.#ctor(LapShop.Bl.IItems,LapShop.Bl.ISliders,LapShop.Bl.ICategories)">
+            <summary>
+            تهيئة الـ Controller مع الخدمات المطلوبة
+            </summary>
+            <param name="itemService">خدمة المنتجات</param>
+            <param name="sliderService">خدمة المنزلقات</param>
+            <param name="categoryService">خدمة الفئات</param>
+        </member>
+        <member name="M:LapShop.Controllers.HomeController.Index">
+            <summary>
+            عرض الصفحة الرئيسية مع جميع البيانات
+            تحتوي على:
+            - جميع المنتجات (مع pagination)
+            - المنتجات الموصى بها
+            - المنتجات الجديدة
+            - المنتجات بالشحن المجاني
+            - المنزلقات الإعلانية
+            - أول 4 فئات
+            </summary>
+            <returns>View مع نموذج VmHomePage يحتوي على جميع البيانات</returns>
+        </member>
+        <member name="T:LapShop.Controllers.UsersController">
+            <summary>
+            UsersController - يتعامل مع جميع عمليات المستخدمين (التسجيل والدخول والخروج)
+            يستخدم ASP.NET Core Identity للمصادقة والتفويض
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.#ctor(Microsoft.AspNetCore.Identity.UserManager{LapShop.Models.ApplicationUser},Microsoft.AspNetCore.Identity.SignInManager{LapShop.Models.ApplicationUser})">
+            <summary>
+            تهيئة controller مع الـ dependencies المطلوبة
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.Login(System.String)">
+            <summary>
+            عرض صفحة تسجيل الدخول
+            </summary>
+            <param name="returnUrl">الرابط المراد الذهاب إليه بعد الدخول</param>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.Login(LapShop.Models.UserModel)">
+            <summary>
+            معالجة عملية تسجيل الدخول
+            </summary>
+            <param name="model">بيانات المستخدم (البريد والكلمة المرور)</param>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.LoginOut">
+            <summary>
+            تسجيل خروج المستخدم
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.Register">
+            <summary>
+            عرض صفحة إنشاء حساب جديد
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.Register(LapShop.Models.UserModel)">
+            <summary>
+            معالجة عملية إنشاء حساب جديد
+            </summary>
+            <param name="model">بيانات المستخدم الجديد</param>
+        </member>
+        <member name="M:LapShop.Controllers.UsersController.AccessDenied">
+            <summary>
+            عرض صفحة الوصول مرفوض
+            </summary>
+        </member>
+        <member name="T:LapShop.Models.ApiResponse">
+            <summary>
+            ApiResponse - نموذج للاستجابة الموحدة من الـ API
+            يتم استخدام هذا النموذج في جميع API endpoints لضمان استجابة موحدة
+            يحتوي على البيانات والأخطاء وكود الحالة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ApiResponse.Data">
+            <summary>
+            البيانات المرسلة من الـ API
+            يمكن أن تكون قائمة، كائن واحد، أو null
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ApiResponse.Errors">
+            <summary>
+            الأخطاء إن وجدت
+            يمكن أن تحتوي على رسالة خطأ واحدة أو قائمة أخطاء
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ApiResponse.StatusCode">
+            <summary>
+            كود حالة الـ API
+            200 = نجاح العملية
+            400 = خطأ في الطلب
+            502 = خطأ في الخادم
+            </summary>
+        </member>
+        <member name="T:LapShop.Models.UserModel">
+            <summary>
+            UserModel - نموذج بيانات المستخدم
+            يُستخدم لنقل بيانات التسجيل والدخول بين العرض (View) والـ Controller
+            Data Transfer Object (DTO) للمصادقة والتفويض
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.UserModel.FirstName">
+            <summary>
+            الاسم الأول للمستخدم
+            إلزامي - يجب ملأه عند التسجيل
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.UserModel.LastName">
+            <summary>
+            اسم العائلة للمستخدم
+            إلزامي - يجب ملأه عند التسجيل
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.UserModel.Email">
+            <summary>
+            البريد الإلكتروني للمستخدم
+            إلزامي - يجب أن يكون صيغة بريد إلكتروني صحيحة
+            يُستخدم كاسم مستخدم فريد في النظام
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.UserModel.Password">
+            <summary>
+            كلمة المرور
+            إلزامية - الحد الأدنى 6 أحرف
+            لا تتطلب أحرف كبيرة أو أحرف خاصة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.UserModel.ReturnUrl">
+            <summary>
+            رابط الإعادة (Return URL)
+            اختياري - إذا تم تعيينه، سيتم إعادة توجيه المستخدم لهذا الرابط بعد التسجيل/الدخول
+            null = إعادة توجيه إلى الصفحة الرئيسية
+            </summary>
+        </member>
+        <member name="T:LapShop.Resources.ResAdmin">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblCategoryName">
+            <summary>
+              Looks up a localized string similar to Category Name.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblGpu">
+            <summary>
+              Looks up a localized string similar to Gpu.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblHardDisk">
+            <summary>
+              Looks up a localized string similar to Hard Disk.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblImage">
+            <summary>
+              Looks up a localized string similar to Image.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblItemName">
+            <summary>
+              Looks up a localized string similar to Item Name.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblItemType">
+            <summary>
+              Looks up a localized string similar to Item Type.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblOs">
+            <summary>
+              Looks up a localized string similar to Operating System.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblPrice">
+            <summary>
+              Looks up a localized string similar to Price.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblProcessor">
+            <summary>
+              Looks up a localized string similar to Processor.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblPurchasePrice">
+            <summary>
+              Looks up a localized string similar to Purchase Price.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblRamSize">
+            <summary>
+              Looks up a localized string similar to Ram Size.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblSalesPrice">
+            <summary>
+              Looks up a localized string similar to Sales Price.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblScreenReslution">
+            <summary>
+              Looks up a localized string similar to Screen Solution.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblScreenSize">
+            <summary>
+              Looks up a localized string similar to Screen Size.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblShowHomePage">
+            <summary>
+              Looks up a localized string similar to Show in Home Page.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.lblWeight">
+            <summary>
+              Looks up a localized string similar to Weight.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResAdmin.msgItemName">
+            <summary>
+              Looks up a localized string similar to Please Enter Item Name.
+            </summary>
+        </member>
+        <member name="T:LapShop.Resources.ResGeneral">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.lblActions">
+            <summary>
+              Looks up a localized string similar to Actions.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.lblEdit">
+            <summary>
+              Looks up a localized string similar to Edit.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.lblNew">
+            <summary>
+              Looks up a localized string similar to New.
+            </summary>
+        </member>
+        <member name="P:LapShop.Resources.ResGeneral.lblSave">
+            <summary>
+              Looks up a localized string similar to Save.
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+    </members>
+</doc>
