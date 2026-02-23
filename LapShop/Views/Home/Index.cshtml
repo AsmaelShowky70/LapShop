@@ -34,7 +34,7 @@
             @foreach (var category in Model.lstCategories.Take(4))
             {
                 <div class="col-lg-3 col-md-6">
-                    <a href="/Items/ItemList/@category.CategoryId">
+                    <a asp-controller="Items" asp-action="ItemList" asp-route-categoryId="@category.CategoryId">
                         <div class="collection-banner p-right text-right">
                             <div class="img-part">
                                 <img src="~/Uploads/Categories/@category.ImageName"
@@ -66,8 +66,9 @@
         <div class="col-lg-6 offset-lg-3">
             <div class="product-para">
                 <p class="text-center">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    @(isArabic
+                        ? "استكشف أحدث عروض أجهزة اللاب توب من أفضل الماركات العالمية بأسعار تنافسية وجودة مضمونة."
+                        : "Discover our latest laptop deals from top global brands with great performance and value.")
                 </p>
             </div>
         </div>
@@ -82,16 +83,16 @@
         }
         <div class="row">
             <div class="col-12">
-                <div class="bg-title-part">
+                <div class="bg-title-part home-category-strip">
                     <h5 class="title-border">@(isArabic ? "تصفّح حسب الفئة" : "browse by category")</h5>
-                    <ul class="tabs tab-title">
+                    <ul class="tab-title home-category-tabs">
                         <li class="@(selectedCategoryId == 0 ? "current" : "")">
                             <a asp-controller="Home" asp-action="Index">@(isArabic ? "الكل" : "All")</a>
                         </li>
                         @foreach (var category in Model.lstCategories)
                         {
                             <li class="@(selectedCategoryId == category.CategoryId ? "current" : "")">
-                                <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@category.CategoryId">
+                                <a asp-controller="Items" asp-action="ItemList" asp-route-categoryId="@category.CategoryId">
                                     @category.CategoryName
                                 </a>
                             </li>
@@ -113,11 +114,9 @@
                 @{
                     var page = ViewBag.CurrentPage == null ? 1 : (int)ViewBag.CurrentPage;
                 }
-                <a asp-controller="Home"
-                   asp-action="Index"
-                   asp-route-categoryId="@(selectedCategoryId == 0 ? null : selectedCategoryId)"
-                   asp-route-page="@(page + 1)"
-                   class="btn btn-primary">
+                <a asp-controller="Home" asp-action="Index"
+                    asp-route-categoryId="@(selectedCategoryId == 0 ? null : selectedCategoryId)"
+                    asp-route-page="@(page + 1)" class="btn btn-primary">
                     عرض المزيد
                 </a>
             </div>

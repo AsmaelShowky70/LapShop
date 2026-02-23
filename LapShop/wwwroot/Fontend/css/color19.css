@@ -3487,6 +3487,71 @@ header {
       .theme-tab .tab-title2 .current a {
         background-color: #ffffff; }
 
+.home-category-strip {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 6px;
+  background-color: #f7f8fb;
+  border: 1px solid #e3e6f0;
+}
+
+.home-category-strip .title-border {
+  margin-bottom: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+}
+
+.home-category-tabs {
+  margin-bottom: 0;
+  margin-top: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-left: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 28px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.home-category-tabs li {
+  font-size: 15px;
+}
+
+.home-category-tabs a {
+  color: #2d2a25;
+  text-transform: uppercase;
+}
+
+.home-category-tabs .current a {
+  color: var(--theme-deafult);
+  font-weight: 700;
+}
+
+.home-category-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.home-category-tabs::-webkit-scrollbar-thumb {
+  background-color: #c5c9d6;
+  border-radius: 2px;
+}
+
 .tab-bg {
   position: relative;
   z-index: 1;
