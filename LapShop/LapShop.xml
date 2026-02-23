@@ -55,6 +55,54 @@
             </summary>
             <param name="id">رقم معرّف المنتج المراد حذفه</param>
         </member>
+        <member name="T:LapShop.ApiControllers.SettingController">
+            <summary>
+            SettingController - API Endpoint لإعدادات التطبيق
+            يوفر واجهة برمجية للوصول إلى إعدادات التطبيق الأساسية
+            </summary>
+        </member>
+        <member name="F:LapShop.ApiControllers.SettingController._settingsService">
+            <summary>
+            خدمة إدارة الإعدادات
+            </summary>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.#ctor(LapShop.Bl.ISettings)">
+            <summary>
+            تهيئة الـ API Controller مع خدمة الإعدادات
+            </summary>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.Get">
+            <summary>
+            الحصول على جميع إعدادات التطبيق
+            </summary>
+            <returns>كائن TbSettings يحتوي على الإعدادات</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.Get(System.Int32)">
+            <summary>
+            الحصول على إعداد محدد برقم معرّفه
+            </summary>
+            <param name="id">رقم معرّف الإعداد</param>
+            <returns>قيمة الإعداد</returns>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.Post(System.String)">
+            <summary>
+            إضافة إعداد جديد
+            </summary>
+            <param name="value">قيمة الإعداد</param>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.Put(System.Int32,System.String)">
+            <summary>
+            تحديث إعداد محدد
+            </summary>
+            <param name="id">رقم معرّف الإعداد</param>
+            <param name="value">القيمة الجديدة</param>
+        </member>
+        <member name="M:LapShop.ApiControllers.SettingController.Delete(System.Int32)">
+            <summary>
+            حذف إعداد محدد
+            </summary>
+            <param name="id">رقم معرّف الإعداد</param>
+        </member>
         <member name="T:LapShop.Controllers.HomeController">
             <summary>
             HomeController - يتعامل مع الصفحة الرئيسية والتنقل العام
@@ -96,6 +144,124 @@
             - أول 4 فئات
             </summary>
             <returns>View مع نموذج VmHomePage يحتوي على جميع البيانات</returns>
+        </member>
+        <member name="T:LapShop.Controllers.ItemsController">
+            <summary>
+            ItemsController - يتعامل مع عرض المنتجات والتفاصيل
+            يعرض قائمة المنتجات وتفاصيل كل منتج مع الصور والمنتجات الموصى بها
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.ItemsController._itemService">
+            <summary>
+            خدمة إدارة المنتجات
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.ItemsController._itemImagesService">
+            <summary>
+            خدمة إدارة صور المنتجات
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.ItemsController.#ctor(LapShop.Bl.IItems,LapShop.Bl.IItemImages)">
+            <summary>
+            تهيئة الـ Controller مع الخدمات المطلوبة
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.ItemsController.ItemDetails(System.Int32)">
+            <summary>
+            عرض تفاصيل منتج واحد مع الصور والمنتجات الموصى بها
+            </summary>
+            <param name="id">رقم معرّف المنتج</param>
+            <returns>View مع تفاصيل المنتج</returns>
+        </member>
+        <member name="M:LapShop.Controllers.ItemsController.ItemList">
+            <summary>
+            عرض قائمة جميع المنتجات
+            </summary>
+            <returns>View بقائمة المنتجات</returns>
+        </member>
+        <member name="T:LapShop.Controllers.OrderController">
+            <summary>
+            OrderController - يتعامل مع سلة التسوق والطلبات
+            يدير إضافة المنتجات للسلة وإنشاء الطلبات والفواتير
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.OrderController._itemService">
+            <summary>
+            خدمة المنتجات
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.OrderController._userManager">
+            <summary>
+            مدير المستخدمين من Identity
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.OrderController._salesInvoiceService">
+            <summary>
+            خدمة الفواتير والطلبات
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.#ctor(LapShop.Bl.IItems,Microsoft.AspNetCore.Identity.UserManager{LapShop.Models.ApplicationUser},LapShop.Bl.ISalesInvoice)">
+            <summary>
+            تهيئة الـ Controller مع الخدمات المطلوبة
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.Cart">
+            <summary>
+            عرض محتويات سلة التسوق الحالية
+            تحصل على بيانات السلة من الـ Cookies
+            </summary>
+            <returns>View مع محتويات السلة</returns>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.AddToCart(System.Int32)">
+            <summary>
+            إضافة منتج إلى سلة التسوق
+            </summary>
+            <param name="itemId">رقم معرّف المنتج</param>
+            <returns>إعادة توجيه إلى صفحة السلة</returns>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.MyOrders">
+            <summary>
+            عرض طلبات المستخدم السابقة
+            يتطلب تسجيل دخول المستخدم
+            </summary>
+            <returns>View بقائمة الطلبات</returns>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.OrderSuccess">
+            <summary>
+            صفحة تأكيد الطلب بعد الشراء
+            تحفظ الطلب في قاعدة البيانات وتنظف السلة
+            يتطلب المستخدم أن يكون مسجل دخول (Authorize)
+            </summary>
+            <returns>View بتأكيد الطلب</returns>
+        </member>
+        <member name="M:LapShop.Controllers.OrderController.SaveOrder(LapShop.Models.ShoppingCart)">
+            <summary>
+            حفظ الطلب وعناصره في قاعدة البيانات
+            </summary>
+            <param name="oShoppingCart">بيانات سلة التسوق</param>
+        </member>
+        <member name="T:LapShop.Controllers.PagesController">
+            <summary>
+            PagesController - يتعامل مع الصفحات الثابتة والمحتوى الديناميكي
+            يعرض صفحات مثل "حول"، "الشروط والأحكام"، وغيرها
+            </summary>
+        </member>
+        <member name="F:LapShop.Controllers.PagesController._pageService">
+            <summary>
+            خدمة إدارة الصفحات
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.PagesController.#ctor(LapShop.Bl.IPages)">
+            <summary>
+            تهيئة الـ Controller مع خدمة الصفحات
+            </summary>
+        </member>
+        <member name="M:LapShop.Controllers.PagesController.Index(System.Int32)">
+            <summary>
+            عرض صفحة محددة برقم معرّفها
+            </summary>
+            <param name="pageId">رقم معرّف الصفحة</param>
+            <returns>View مع محتوى الصفحة</returns>
         </member>
         <member name="T:LapShop.Controllers.UsersController">
             <summary>
@@ -168,6 +334,76 @@
             502 = خطأ في الخادم
             </summary>
         </member>
+        <member name="T:LapShop.Models.ShoppingCart">
+            <summary>
+            ShoppingCart - نموذج سلة التسوق
+            يتم تخزينها في Cookies ويحتوي على قائمة المنتجات والإجمالي
+            </summary>
+        </member>
+        <member name="M:LapShop.Models.ShoppingCart.#ctor">
+            <summary>
+            تهيئة السلة بقائمة فارغة من العناصر
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCart.lstItems">
+            <summary>
+            قائمة عناصر السلة (المنتجات المضافة)
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCart.Total">
+            <summary>
+            إجمالي سعر السلة
+            يتم حسابه تلقائياً عند إضافة أو حذف منتج
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCart.PromoCode">
+            <summary>
+            كود الخصم (إن وُجد)
+            يمكن استخدامه لتطبيق خصم على الشراء
+            </summary>
+        </member>
+        <member name="T:LapShop.Models.ShoppingCartItem">
+            <summary>
+            ShoppingCartItem - عنصر واحد في سلة التسوق
+            يمثل منتج واحد مع كميته وسعره والإجمالي
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.ItemId">
+            <summary>
+            رقم معرّف المنتج
+            يُستخدم لربط العنصر بالمنتج الأصلي
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.ItemName">
+            <summary>
+            اسم المنتج
+            يُعرض للمستخدم في السلة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.ImageName">
+            <summary>
+            اسم صورة المنتج
+            يُستخدم لعرض صورة المنتج
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.Qty">
+            <summary>
+            الكمية المطلوبة من المنتج
+            يمكن تعديلها من قبل المستخدم
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.Price">
+            <summary>
+            سعر الوحدة الواحدة للمنتج
+            سعر البيع وقت الإضافة للسلة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.ShoppingCartItem.Total">
+            <summary>
+            الإجمالي لهذا العنصر
+            يُحسب بضرب الكمية × السعر
+            </summary>
+        </member>
         <member name="T:LapShop.Models.UserModel">
             <summary>
             UserModel - نموذج بيانات المستخدم
@@ -206,6 +442,88 @@
             رابط الإعادة (Return URL)
             اختياري - إذا تم تعيينه، سيتم إعادة توجيه المستخدم لهذا الرابط بعد التسجيل/الدخول
             null = إعادة توجيه إلى الصفحة الرئيسية
+            </summary>
+        </member>
+        <member name="T:LapShop.Models.VmHomePage">
+            <summary>
+            VmHomePage - نموذج عرض الصفحة الرئيسية
+            يحتوي على جميع البيانات المطلوبة لعرض الصفحة الرئيسية
+            بما فيها المنتجات والفئات والمنزلقات والإعدادات
+            </summary>
+        </member>
+        <member name="M:LapShop.Models.VmHomePage.#ctor">
+            <summary>
+            تهيئة نموذج الصفحة الرئيسية بقوائم فارغة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstAllItems">
+            <summary>
+            قائمة جميع المنتجات المتاحة
+            تُعرض في قسم "جميع المنتجات"
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstRecommendedItems">
+            <summary>
+            قائمة المنتجات الموصى بها
+            تُعرض في قسم "منتجات موصى بها"
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstNewItems">
+            <summary>
+            قائمة المنتجات الجديدة
+            تُعرض في قسم "المنتجات الجديدة"
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstFreeDelivry">
+            <summary>
+            قائمة المنتجات بالشحن المجاني
+            تُعرض في قسم "شحن مجاني"
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstCategories">
+            <summary>
+            قائمة الفئات المعروضة بالصفحة الرئيسية
+            عادة أول 4 فئات
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.lstSliders">
+            <summary>
+            قائمة المنزلقات الإعلانية (Sliders)
+            تُعرض في الجزء العلوي من الصفحة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmHomePage.Settings">
+            <summary>
+            إعدادات التطبيق (الشركة، معلومات التواصل، إلخ)
+            تُستخدم في تخطيط الصفحة
+            </summary>
+        </member>
+        <member name="T:LapShop.Models.VmItemDetails">
+            <summary>
+            VmItemDetails - نموذج عرض تفاصيل المنتج
+            يحتوي على المنتج وصوره والمنتجات الموصى بها
+            </summary>
+        </member>
+        <member name="M:LapShop.Models.VmItemDetails.#ctor">
+            <summary>
+            تهيئة النموذج بقوائم فارغة
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmItemDetails.Item">
+            <summary>
+            بيانات المنتج الرئيسي (الاسم، السعر، الوصف، إلخ)
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmItemDetails.lstItemImages">
+            <summary>
+            قائمة صور المنتج
+            يمكن عرض صور متعددة للمنتج الواحد
+            </summary>
+        </member>
+        <member name="P:LapShop.Models.VmItemDetails.lstRecommendedItems">
+            <summary>
+            قائمة المنتجات الموصى بها
+            تُعرض للمستخدم كاقتراحات إضافية
             </summary>
         </member>
         <member name="T:LapShop.Resources.ResAdmin">
