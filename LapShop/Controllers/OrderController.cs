@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using LapShop.Models;
 using LapShop.Bl;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace LapShop.Controllers
 {
@@ -52,13 +53,16 @@ namespace LapShop.Controllers
         /// <returns>View مع محتويات السلة</returns>
         public IActionResult Cart()
         {
-            // الحصول على بيانات السلة من الـ Cookies
             string sessionCart = string.Empty;
             if (HttpContext.Request.Cookies["Cart"] != null)
                 sessionCart = HttpContext.Request.Cookies["Cart"];
 
-            // تحويل JSON إلى كائن ShoppingCart
-            var cart = JsonConvert.DeserializeObject<ShoppingCart>(sessionCart);
+            ShoppingCart cart;
+            if (!string.IsNullOrEmpty(sessionCart))
+                cart = JsonConvert.DeserializeObject<ShoppingCart>(sessionCart);
+            else
+                cart = new ShoppingCart();
+
             return View(cart);
         }
 
@@ -109,6 +113,64 @@ namespace LapShop.Controllers
             HttpContext.Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
 
             return RedirectToAction("Cart");
+        }
+
+        [HttpPost]
+        public JsonResult UpdateQty(int itemId, int qty)
+        {
+            string sessionCart = string.Empty;
+            if (HttpContext.Request.Cookies["Cart"] != null)
+                sessionCart = HttpContext.Request.Cookies["Cart"];
+
+            ShoppingCart cart;
+            if (!string.IsNullOrEmpty(sessionCart))
+                cart = JsonConvert.DeserializeObject<ShoppingCart>(sessionCart);
+            else
+                cart = new ShoppingCart();
+
+            var item = cart.lstItems.FirstOrDefault(a => a.ItemId == itemId);
+            if (item != null)
+            {
+                if (qty <= 0)
+                {
+                    cart.lstItems.Remove(item);
+                }
+                else
+                {
+                    item.Qty = qty;
+                    item.Total = item.Qty * item.Price;
+                }
+            }
+
+            cart.Total = cart.lstItems.Sum(a => a.Total);
+            HttpContext.Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
+            var cartCount = cart.lstItems.Sum(a => a.Qty);
+
+            return Json(new { total = cart.Total, cartCount });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveFromCart(int itemId)
+        {
+            string sessionCart = string.Empty;
+            if (HttpContext.Request.Cookies["Cart"] != null)
+                sessionCart = HttpContext.Request.Cookies["Cart"];
+
+            ShoppingCart cart;
+            if (!string.IsNullOrEmpty(sessionCart))
+                cart = JsonConvert.DeserializeObject<ShoppingCart>(sessionCart);
+            else
+                cart = new ShoppingCart();
+
+            var item = cart.lstItems.FirstOrDefault(a => a.ItemId == itemId);
+            if (item != null)
+                cart.lstItems.Remove(item);
+
+            cart.Total = cart.lstItems.Sum(a => a.Total);
+            HttpContext.Response.Cookies.Append("Cart", JsonConvert.SerializeObject(cart));
+            var cartCount = cart.lstItems.Sum(a => a.Qty);
+
+            return Json(new { total = cart.Total, cartCount });
         }
         #endregion
 

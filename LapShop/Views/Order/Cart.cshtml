@@ -1,4 +1,4 @@
-﻿@model ShoppingCart
+@model ShoppingCart
 
 <!-- breadcrumb start -->
 <div class="breadcrumb-section">
@@ -72,13 +72,13 @@
                                     <div class="qty-box">
                                         <div class="input-group">
                                             <input type="number" name="quantity"
-                                               class="form-control input-number qty"
-                                               data-id="@item.ItemId" data-price="@item.Price"
-                                               value="@item.Qty" onkeyup="ChangeQty(this)">
+                                                   class="form-control input-number qty"
+                                                   data-id="@item.ItemId" data-price="@item.Price"
+                                                   value="@item.Qty" onkeyup="ChangeQty(this)" onchange="ChangeQty(this)">
                                         </div>
                                     </div>
                                 </td>
-                                <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
+                                <td><a href="javascript:void(0)" class="icon remove-item" data-id="@item.ItemId"><i class="ti-close"></i></a></td>
                                 <td>
                                     <h2 data-id="@item.ItemId" class="td-color totalPrice">@item.Total</h2>
                                 </td>
@@ -111,25 +111,63 @@
 
 
     <script>
-    function ChangeQty(input) {
-        let id = $(input).data("id");
-        let price = $(input).data("price");
-        let qty = $(input).val();
-        let OverAllTotal = 0;
-        $(".totalPrice").each(function(i) {
-
-            if ($(this).data("id") === id) {
-                $(this).html(price * qty);
+        function ChangeQty(input) {
+            var id = $(input).data("id");
+            var price = $(input).data("price");
+            var qty = parseInt($(input).val());
+            if (isNaN(qty) || qty < 0) {
+                qty = 0;
+                $(input).val(qty);
             }
-            alert($(this).html());
-            OverAllTotal =OverAllTotal+ parseFloat( $(this).text());
-            console.log(OverAllTotal);
-        });
-        console.log(OverAllTotal);
-        $("#OverAllTotal").html(OverAllTotal);
 
-        // ajax resuest
-    }
+            $(".totalPrice").each(function () {
+                if ($(this).data("id") === id) {
+                    $(this).html(price * qty);
+                }
+            });
+
+            $.ajax({
+                url: "/Order/UpdateQty",
+                type: "POST",
+                data: { itemId: id, qty: qty },
+                success: function (result) {
+                    if (result && typeof result.total !== "undefined") {
+                        $("#OverAllTotal").html("$" + result.total);
+                    }
+                    if (result && typeof result.cartCount !== "undefined") {
+                        var countElement = document.getElementById("cart-count");
+                        if (countElement) {
+                            countElement.innerHTML = result.cartCount;
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(".remove-item").on("click", function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                var row = $(this).closest("tr");
+                $.ajax({
+                    url: "/Order/RemoveFromCart",
+                    type: "POST",
+                    data: { itemId: id },
+                    success: function (result) {
+                        row.remove();
+                        if (result && typeof result.total !== "undefined") {
+                            $("#OverAllTotal").html("$" + result.total);
+                        }
+                        if (result && typeof result.cartCount !== "undefined") {
+                            var countElement = document.getElementById("cart-count");
+                            if (countElement) {
+                                countElement.innerHTML = result.cartCount;
+                            }
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
 }

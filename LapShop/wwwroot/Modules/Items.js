@@ -1,12 +1,21 @@
-﻿
+
 var ClsItems = {
     GetAll: function () {
-        Helper.AjaxCallGet("https://localhost:7159/api/Items", {}, "json",
+        Helper.AjaxCallGet("/api/Items", {}, "json",
             function (data) {
+                var allItems = data.data || [];
+                var params = new URLSearchParams(window.location.search);
+                var q = params.get("q");
+                if (q) {
+                    var term = q.toLowerCase();
+                    allItems = allItems.filter(function (item) {
+                        return item.itemName && item.itemName.toLowerCase().indexOf(term) !== -1;
+                    });
+                }
 
 
                 $('#ItemPagination').pagination({
-                    dataSource: data.data,
+                    dataSource: allItems,
                     pageSize: 20,
                     showGoInput: true,
                     showGoButton: true,

@@ -25,7 +25,6 @@ builder.Services.AddCors(options =>
 });
 
 #region Entity Framework - قاعدة البيانات والـ Identity
-// تكوين اتصال قاعدة البيانات
 builder.Services.AddDbContext<LapShopContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
