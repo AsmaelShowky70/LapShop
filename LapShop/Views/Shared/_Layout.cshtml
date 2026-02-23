@@ -31,6 +31,42 @@
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="~/Fontend/css/color19.css" media="screen" id="color">
 
+    <style>
+        @@media (max-width: 767.98px) {
+            .header-tools.marketplace .main-menu {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .header-tools.marketplace .main-menu .menu-left {
+                flex: 0 0 auto;
+            }
+
+            .header-tools.marketplace .main-menu .menu-right {
+                flex: 1 1 auto;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+
+            .header-tools.marketplace .main-menu .menu-right #main-nav {
+                display: none;
+            }
+
+            .header-tools.marketplace .main-menu .menu-right .icon-nav ul {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin: 0;
+            }
+
+            .header-tools.marketplace .main-menu .menu-right .icon-nav ul li {
+                margin-left: 12px;
+            }
+        }
+    </style>
+
     @RenderSection("Styles",required:false);
 </head>
 <body>
