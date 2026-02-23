@@ -214,13 +214,30 @@
       gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
       var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
 
+      var labels = [];
+      var totals = [];
+      var completed = [];
+      var pending = [];
+
+      if (window.dashboardData && window.dashboardData.visitSaleLabels && window.dashboardData.visitSaleLabels.length) {
+        labels = window.dashboardData.visitSaleLabels;
+        totals = window.dashboardData.visitSaleTotals || [];
+        completed = window.dashboardData.visitSaleCompleted || [];
+        pending = window.dashboardData.visitSalePending || [];
+      } else {
+        labels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'];
+        totals = [20, 40, 15, 35, 25, 50, 30, 20];
+        completed = [10, 20, 10, 20, 15, 25, 15, 10];
+        pending = [5, 10, 5, 10, 5, 10, 5, 10];
+      }
+
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG'],
+            labels: labels,
             datasets: [
               {
-                label: "CHN",
+                label: "Orders",
                 borderColor: gradientStrokeViolet,
                 backgroundColor: gradientStrokeViolet,
                 hoverBackgroundColor: gradientStrokeViolet,
@@ -229,22 +246,10 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [20, 40, 15, 35, 25, 50, 30, 20]
+                data: totals
               },
               {
-                label: "USA",
-                borderColor: gradientStrokeRed,
-                backgroundColor: gradientStrokeRed,
-                hoverBackgroundColor: gradientStrokeRed,
-                legendColor: gradientLegendRed,
-                pointRadius: 0,
-                fill: false,
-                borderWidth: 1,
-                fill: 'origin',
-                data: [40, 30, 20, 10, 50, 15, 35, 40]
-              },
-              {
-                label: "UK",
+                label: "Completed",
                 borderColor: gradientStrokeBlue,
                 backgroundColor: gradientStrokeBlue,
                 hoverBackgroundColor: gradientStrokeBlue,
@@ -253,7 +258,19 @@
                 fill: false,
                 borderWidth: 1,
                 fill: 'origin',
-                data: [70, 10, 30, 40, 25, 50, 15, 30]
+                data: completed
+              },
+              {
+                label: "Pending",
+                borderColor: gradientStrokeRed,
+                backgroundColor: gradientStrokeRed,
+                hoverBackgroundColor: gradientStrokeRed,
+                legendColor: gradientLegendRed,
+                pointRadius: 0,
+                fill: false,
+                borderWidth: 1,
+                fill: 'origin',
+                data: pending
               }
           ]
         },
@@ -434,24 +451,40 @@
       $("#visit-sale-chart-legend-dark").html(myChart.generateLegend());
     }
     if ($("#traffic-chart").length) {
-      var gradientStrokeBlue = ctx.createLinearGradient(0, 0, 0, 181);
+      var trafficChartCanvas = $("#traffic-chart").get(0).getContext("2d");
+      var gradientStrokeBlue = trafficChartCanvas.createLinearGradient(0, 0, 0, 181);
       gradientStrokeBlue.addColorStop(0, 'rgba(54, 215, 232, 1)');
       gradientStrokeBlue.addColorStop(1, 'rgba(177, 148, 250, 1)');
       var gradientLegendBlue = 'linear-gradient(to right, rgba(54, 215, 232, 1), rgba(177, 148, 250, 1))';
 
-      var gradientStrokeRed = ctx.createLinearGradient(0, 0, 0, 50);
+      var gradientStrokeRed = trafficChartCanvas.createLinearGradient(0, 0, 0, 50);
       gradientStrokeRed.addColorStop(0, 'rgba(255, 191, 150, 1)');
       gradientStrokeRed.addColorStop(1, 'rgba(254, 112, 150, 1)');
       var gradientLegendRed = 'linear-gradient(to right, rgba(255, 191, 150, 1), rgba(254, 112, 150, 1))';
 
-      var gradientStrokeGreen = ctx.createLinearGradient(0, 0, 0, 300);
+      var gradientStrokeGreen = trafficChartCanvas.createLinearGradient(0, 0, 0, 300);
       gradientStrokeGreen.addColorStop(0, 'rgba(6, 185, 157, 1)');
       gradientStrokeGreen.addColorStop(1, 'rgba(132, 217, 210, 1)');
       var gradientLegendGreen = 'linear-gradient(to right, rgba(6, 185, 157, 1), rgba(132, 217, 210, 1))';      
 
+      var trafficLabels = [];
+      var trafficDataValues = [];
+
+      if (window.dashboardData && window.dashboardData.trafficLabels && window.dashboardData.trafficLabels.length) {
+        trafficLabels = window.dashboardData.trafficLabels;
+        trafficDataValues = window.dashboardData.trafficData || [];
+      } else {
+        trafficLabels = [
+          'Search Engines',
+          'Direct Click',
+          'Bookmarks Click'
+        ];
+        trafficDataValues = [30, 30, 40];
+      }
+
       var trafficChartData = {
         datasets: [{
-          data: [30, 30, 40],
+          data: trafficDataValues,
           backgroundColor: [
             gradientStrokeBlue,
             gradientStrokeGreen,
@@ -474,12 +507,7 @@
           ]
         }],
     
-        // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: [
-          'Search Engines',
-          'Direct Click',
-          'Bookmarks Click',
-        ]
+        labels: trafficLabels
       };
       var trafficChartOptions = {
         responsive: true,
@@ -498,14 +526,13 @@
               if (trafficChartData.labels[i]) { 
                   text.push(trafficChartData.labels[i]); 
               }
-              text.push('<span class="float-right">'+trafficChartData.datasets[0].data[i]+"%"+'</span>')
+              text.push('<span class="float-right">'+trafficChartData.datasets[0].data[i]+'</span>')
               text.push('</li>'); 
           } 
           text.push('</ul>'); 
           return text.join('');
         }
       };
-      var trafficChartCanvas = $("#traffic-chart").get(0).getContext("2d");
       var trafficChart = new Chart(trafficChartCanvas, {
         type: 'doughnut',
         data: trafficChartData,

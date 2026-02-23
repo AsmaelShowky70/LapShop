@@ -1,7 +1,10 @@
 ﻿@inject SignInManager<ApplicationUser> sinInManager
+@{
+    var isArabic = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+}
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="@(isArabic ? "ar" : "en")" dir="@(isArabic ? "rtl" : "ltr")">
 
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -37,6 +40,11 @@
             max-height: 50px;
             height: auto;
             width: auto;
+        }
+
+        .setting-sidebar,
+        #setting_box {
+            display: none !important;
         }
 
         @@media (max-width: 767.98px) {
@@ -265,22 +273,25 @@
                                     <nav>
                                         <div onclick="closeNav()">
                                             <div class="sidebar-back text-left">
-                                                <i class="fa fa-angle-left pr-2" aria-hidden="true"></i> Back
+                                                <i class="fa fa-angle-left pr-2" aria-hidden="true"></i> @(isArabic ? "رجوع" : "Back")
                                             </div>
                                         </div>
                                         <ul id="sub-menu" class="sm pixelstrap sm-vertical">
                                             <li>
-                                                <a href="#">Home</a>
+                                                <a href="/Home/Index">@(isArabic ? "الرئيسية" : "Home")</a>
                                             </li>
                                             <li>
-                                                <a href="#">Products</a>
+                                                <a href="/Items/ItemList">@(isArabic ? "المنتجات" : "Products")</a>
                                             </li>
                                             <li>
-                                                <a href="#">About Us</a>
+                                                <a asp-controller="Pages" asp-action="Index" asp-route-pageId="3">
+                                                    @(isArabic ? "من نحن" : "About Us")
+                                                </a>
                                             </li>
-                                            <li><a href="#">Terms Of Use</a></li>
                                             <li>
-                                                <a href="#">Contact Us</a>
+                                                <a asp-controller="Pages" asp-action="Index" asp-route-pageId="5">
+                                                    @(isArabic ? "تواصل معنا" : "Contact Us")
+                                                </a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -300,27 +311,24 @@
                                     <ul id="main-menu" class="sm pixelstrap sm-horizontal">
                                         <li>
                                             <div class="mobile-back text-right">
-                                                Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
+                                                @(isArabic ? "رجوع" : "Back")<i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
                                             </div>
                                         </li>
                                         <li>
-                                            <a href="/Home/Index">Home</a>
+                                            <a href="/Home/Index">@(isArabic ? "الرئيسية" : "Home")</a>
                                         </li>
                                         <li>
-                                            <a href="/Items/ItemList">product</a>
+                                            <a href="/Items/ItemList">@(isArabic ? "المنتجات" : "Products")</a>
                                         </li>
                                         <li class="mega" id="hover-cls">
                                             <a asp-controller="Pages" asp-action="Index" asp-route-pageId="3">
-                                                About Us
+                                                @(isArabic ? "من نحن" : "About Us")
                                             </a>
                                         </li>
                                         <li>
-                                            <a asp-controller="Pages" asp-action="Index" asp-route-pageId="4">Terms Of
-                                                Use</a>
-                                        </li>
-                                        <li>
-                                            <a asp-controller="Pages" asp-action="Index" asp-route-pageId="5">Contact
-                                                Us</a>
+                                            <a asp-controller="Pages" asp-action="Index" asp-route-pageId="5">
+                                                @(isArabic ? "تواصل معنا" : "Contact Us")
+                                            </a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -328,6 +336,17 @@
                             <div>
                                 <div class="icon-nav">
                                     <ul>
+                                        <li class="onhover-div">
+                                            @{
+                                                var currentUrl = Context.Request.Path + Context.Request.QueryString;
+                                            }
+                                            <form asp-controller="Home" asp-action="SetLanguage" method="post" class="d-inline">
+                                                <input type="hidden" name="returnUrl" value="@currentUrl" />
+                                                <button type="submit" name="culture" value="en" class="btn btn-link p-0 @(isArabic ? "" : "font-weight-bold")">EN</button>
+                                                <span class="mx-1">|</span>
+                                                <button type="submit" name="culture" value="ar" class="btn btn-link p-0 @(isArabic ? "font-weight-bold" : "")">AR</button>
+                                            </form>
+                                        </li>
                                         <li class="onhover-div">
                                             <div>
                                                 <i class="ti-search" onclick="openSearch()"></i>
@@ -355,10 +374,10 @@
                                                     }
                                                 </div>
                                                 <ul class="onhover-show-div">
-                                                    <li><a asp-controller="Order" asp-action="MyOrders">My Orders</a></li>
+                                                    <li><a asp-controller="Order" asp-action="MyOrders">@(isArabic ? "طلباتي" : "My Orders")</a></li>
                                                     <li>
                                                         <form asp-controller="Users" asp-action="LoginOut" method="post">
-                                                            <button type="submit" class="btn btn-link">Logout</button>
+                                                            <button type="submit" class="btn btn-link">@(isArabic ? "تسجيل الخروج" : "Logout")</button>
                                                         </form>
                                                     </li>
                                                 </ul>
@@ -367,8 +386,8 @@
                                             {
                                                 <i class="fa fa-user" aria-hidden="true"></i>
                                                 <ul class="onhover-show-div">
-                                                    <li><a asp-controller="Users" asp-action="Login">Login</a></li>
-                                                    <li><a asp-controller="Users" asp-action="Register">Register</a></li>
+                                                    <li><a asp-controller="Users" asp-action="Login">@(isArabic ? "تسجيل الدخول" : "Login")</a></li>
+                                                    <li><a asp-controller="Users" asp-action="Register">@(isArabic ? "إنشاء حساب" : "Register")</a></li>
                                                 </ul>
                                             }
                                         </li>
@@ -389,7 +408,7 @@
             onclick="closeSearch()" title="Close Overlay">&times;</span>
         <div class="overlay-content" style="position:relative; top:25%; width:80%; text-align:center; margin:auto;">
             <form action="/Items/ItemList" method="get">
-                <input type="text" placeholder="search product" name="q"
+                <input type="text" placeholder="@(isArabic ? "ابحث عن منتج" : "search product")" name="q"
                     style="padding:15px; font-size:17px; border:none; width:70%; background:white;">
                 <button type="submit"
                     style="padding:15px; font-size:17px; border:none; background:#ff4c3b; color:white; cursor:pointer;">
@@ -413,15 +432,15 @@
                 <div class="row footer-theme partition-f">
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-title footer-mobile-title">
-                            <h4>about</h4>
+                            <h4>@(isArabic ? "نبذة عني" : "about me")</h4>
                         </div>
                         <div class="footer-contant">
                             <div class="footer-logo"><img src="~/Fontend/images/logo.png" class="img-fluid site-logo"
                                     alt="LapShop logo"></div>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                @(isArabic
+                                    ? "أنا أسماءل محمد، مهندس برمجيات من القاهرة، مصر. أعمل على بناء تطبيقات ويب عصرية وسريعة وتجربة مستخدم مميزة."
+                                    : "I am Asmael Mohamed, a software engineer from Cairo, Egypt. I build modern, responsive web applications with clean code, strong performance, and a great user experience.")
                             </p>
                             <div class="footer-social">
                                 <ul>
@@ -438,15 +457,14 @@
                     <div class="col offset-xl-1">
                         <div class="sub-title">
                             <div class="footer-title">
-                                <h4>my account</h4>
+                                <h4>@(isArabic ? "روابط سريعة" : "quick links")</h4>
                             </div>
                             <div class="footer-contant">
                                 <ul>
-                                    <li><a href="#">mens</a></li>
-                                    <li><a href="#">womens</a></li>
-                                    <li><a href="#">clothing</a></li>
-                                    <li><a href="#">accessories</a></li>
-                                    <li><a href="#">featured</a></li>
+                                    <li><a href="/Home/Index">@(isArabic ? "الرئيسية" : "Home")</a></li>
+                                    <li><a href="/Items/ItemList">@(isArabic ? "المنتجات" : "Products")</a></li>
+                                    <li><a asp-controller="Pages" asp-action="Index" asp-route-pageId="3">@(isArabic ? "من أنا" : "About Me")</a></li>
+                                    <li><a asp-controller="Pages" asp-action="Index" asp-route-pageId="5">@(isArabic ? "تواصل معي" : "Contact Me")</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -454,32 +472,15 @@
                     <div class="col">
                         <div class="sub-title">
                             <div class="footer-title">
-                                <h4>why we choose</h4>
-                            </div>
-                            <div class="footer-contant">
-                                <ul>
-                                    <li><a href="#">shipping & return</a></li>
-                                    <li><a href="#">secure shopping</a></li>
-                                    <li><a href="#">gallary</a></li>
-                                    <li><a href="#">affiliates</a></li>
-                                    <li><a href="#">contacts</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="sub-title">
-                            <div class="footer-title">
-                                <h4>store information</h4>
+                                <h4>@(isArabic ? "معلومات الاتصال" : "contact information")</h4>
                             </div>
                             <div class="footer-contant">
                                 <ul class="contact-list">
                                     <li>
-                                        <i class="fa fa-map-marker"></i>Multikart Demo Store, Demo store India 345-659
+                                        <i class="fa fa-map-marker"></i>@(isArabic ? "مصر، القاهرة" : "Egypt, Cairo")
                                     </li>
-                                    <li><i class="fa fa-phone"></i>Call Us: 123-456-7898</li>
-                                    <li><i class="fa fa-envelope-o"></i>Email Us: <a href="#">Support@Fiot.com</a></li>
-                                    <li><i class="fa fa-fax"></i>Fax: 123456</li>
+                                    <li><i class="fa fa-phone"></i>@(isArabic ? "هاتف / واتساب: 01024275208" : "Phone / WhatsApp: 01024275208")</li>
+                                    <li><i class="fa fa-user"></i>@(isArabic ? "هندسة برمجيات وتطوير مواقع" : "Software Engineering &amp; Web Development")</li>
                                 </ul>
                             </div>
                         </div>
@@ -493,8 +494,7 @@
                     <div class="col-xl-6 col-md-6 col-sm-12">
                         <div class="footer-end">
                             <p>
-                                <i class="fa fa-copyright" aria-hidden="true"></i> 2017-18 themeforest powered by
-                                pixelstrap
+                                <i class="fa faopyright" aria-hidden="true"></i> @(isArabic ? "أسماءل محمد - جميع الحقوق محفوظة" : "Asmael Mohamed - All rights reserved")
                             </p>
                         </div>
                     </div>
@@ -540,7 +540,7 @@
                                     <div class="offer-content">
                                         <img src="~/Fontend/images/Offer-banner.png" class="img-fluid blur-up lazyload"
                                             alt="">
-                                        <h2>newsletter</h2>
+                                        <h2>@(isArabic ? "النشرة البريدية" : "newsletter")</h2>
                                         <form
                                             action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&amp;id=082f74cbda"
                                             class="auth-form needs-validation" method="post"
@@ -548,9 +548,9 @@
                                             target="_blank">
                                             <div class="form-group mx-sm-3">
                                                 <input type="email" class="form-control" name="EMAIL" id="mce-EMAIL"
-                                                    placeholder="Enter your email" required="required">
+                                                    placeholder="@(isArabic ? "أدخل بريدك الإلكتروني" : "Enter your email")" required="required">
                                                 <button type="submit" class="btn btn-solid" id="mc-submit">
-                                                    subscribe
+                                                    @(isArabic ? "اشترك" : "subscribe")
                                                 </button>
                                             </div>
                                         </form>

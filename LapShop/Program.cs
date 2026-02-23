@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // تكوين الخدمات الأساسية (Services Configuration)
 // ============================================================================
 
+builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews();
 
 // تفعيل CORS للسماح بالطلبات من أي مصدر (للـ API)
@@ -133,6 +136,23 @@ app.UseStaticFiles();
 
 // تفعيل نظام التوجيه (Routing)
 app.UseRouting();
+
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("ar")
+};
+
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+
+localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
+
+app.UseRequestLocalization(localizationOptions);
 
 // تفعيل CORS - السماح بالطلبات من جميع المصادر
 app.UseCors("AllowAll");

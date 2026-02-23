@@ -1,18 +1,41 @@
-﻿@model TbPages
+@model TbPages
+@{
+    // Try to get pageId from route values first, then from query string
+    var pageId = ViewContext.RouteData.Values["pageId"]?.ToString();
+    if (string.IsNullOrEmpty(pageId))
+    {
+        pageId = Context.Request.Query["pageId"].ToString();
+    }
+
+    var pageTitle = "About us";
+
+    if (pageId == "3")
+    {
+        pageTitle = "About Me";
+    }
+    else if (pageId == "5")
+    {
+        pageTitle = "Contact Me";
+    }
+    else if (!string.IsNullOrEmpty(Model?.Title))
+    {
+        pageTitle = Model.Title;
+    }
+}
 <!-- breadcrumb start -->
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
                 <div class="page-title">
-                    <h2>about us</h2>
+                    <h2>@pageTitle</h2>
                 </div>
             </div>
             <div class="col-sm-6">
                 <nav aria-label="breadcrumb" class="theme-breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">About us</li>
+                        <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@pageTitle</li>
                     </ol>
                 </nav>
             </div>
@@ -20,26 +43,113 @@
     </div>
 </div>
 <!-- breadcrumb end -->
-<!-- about section start -->
+<!-- about / contact section start -->
 <section class="about-page section-b-space">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="banner-section">
-                    <img src="~/Uploads/Pages/@Model.ImageName"
-                         class="img-fluid blur-up lazyload" alt="">
+            @if (pageId == "3")
+            {
+                if (!string.IsNullOrEmpty(Model?.ImageName))
+                {
+                    <div class="col-lg-12">
+                        <div class="banner-section">
+                            <img src="~/Uploads/Pages/@Model.ImageName"
+                                 class="img-fluid blur-up lazyload" alt="About Asmael Mohamed">
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-12 mt-4">
+                    <h4>Asmael Mohamed</h4>
+                    <p>
+                        I am Asmael Mohamed, a software engineering professional based in Cairo, Egypt.
+                        I focus on building modern, fast and reliable web applications with clean architecture
+                        and a great user experience.
+                    </p>
+                    <p>
+                        I enjoy turning ideas into real products, improving performance and security, and
+                        writing maintainable code that is easy to extend and scale over time.
+                    </p>
+                    <p><strong>Location:</strong> Egypt, Cairo</p>
+                    <p><strong>Phone / WhatsApp:</strong> 01024275208</p>
+                    <p><strong>Role:</strong> Software Engineering &amp; Web Development</p>
                 </div>
-            </div>
-            <div class="col-sm-12">
-                <h4>
-                    @Model.Title
-                </h4>
-
-                <p>
-                    @Html.Raw(Model.Description)
-                </p>
-            </div>
+            }
+            else if (pageId == "5")
+            {
+                <div class="col-sm-12">
+                    <h4>Contact Me</h4>
+                    <p>
+                        If you would like to work together, have a project idea, or just want to say hello,
+                        you can reach me directly on WhatsApp using the form below.
+                    </p>
+                </div>
+                <div class="col-lg-8">
+                    <form class="theme-form" onsubmit="sendWhatsAppMessage(event)">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="contact-name">Name</label>
+                                <input type="text" class="form-control" id="contact-name" placeholder="Your name"
+                                       required />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contact-email">Email (optional)</label>
+                                <input type="email" class="form-control" id="contact-email" placeholder="Your email" />
+                            </div>
+                            <div class="col-md-12">
+                                <label for="contact-message">Message</label>
+                                <textarea class="form-control" id="contact-message" rows="5"
+                                          placeholder="Write your message here" required></textarea>
+                            </div>
+                            <div class="col-md-12 mt-3">
+                                <button type="submit" class="btn btn-solid">Send via WhatsApp</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <ul class="contact-list">
+                        <li><i class="fa fa-map-marker"></i> Egypt, Cairo</li>
+                        <li><i class="fa fa-phone"></i> Phone / WhatsApp: 01024275208</li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-12">
+                    <div class="banner-section">
+                        <img src="~/Uploads/Pages/@Model.ImageName" class="img-fluid blur-up lazyload" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <h4>
+                        @Model.Title
+                    </h4>
+                    <p>
+                        @Html.Raw(Model.Description)
+                    </p>
+                </div>
+            }
         </div>
     </div>
 </section>
-<!-- about section end -->
+<!-- about / contact section end -->
+@if (pageId == "5")
+{
+    <script>
+        function sendWhatsAppMessage(e) {
+            e.preventDefault();
+            var name = document.getElementById('contact-name').value || '';
+            var email = document.getElementById('contact-email').value || '';
+            var message = document.getElementById('contact-message').value || '';
+
+            var fullMessage = 'Hello, I am ' + name + '\n\n' +
+                message +
+                (email ? '\n\nEmail: ' + email : '') +
+                '\n\nSent from LapShop website.';
+
+            var phone = '201024275208';
+            var url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(fullMessage);
+            window.open(url, '_blank');
+        }
+    </script>
+}

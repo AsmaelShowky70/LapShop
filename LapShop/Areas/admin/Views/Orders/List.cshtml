@@ -1,0 +1,78 @@
+@model IEnumerable<LapShop.Models.TbSalesInvoice>
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Orders</h3>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Orders List</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Invoice Date</th>
+                                    <th>Delivery Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model)
+                                {
+                                    var statusText = order.CurrentState switch
+                                    {
+                                        1 => "Pending",
+                                        2 => "In Delivery",
+                                        3 => "Completed",
+                                        _ => "Unknown"
+                                    };
+
+                                    var statusClass = order.CurrentState switch
+                                    {
+                                        1 => "badge badge-gradient-warning",
+                                        2 => "badge badge-gradient-info",
+                                        3 => "badge badge-gradient-success",
+                                        _ => "badge badge-gradient-secondary"
+                                    };
+
+                                    <tr>
+                                        <td>@order.InvoiceId</td>
+                                        <td>@order.InvoiceDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@order.DelivryDate.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            <span class="@statusClass">@statusText</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <form asp-area="admin" asp-controller="Orders" asp-action="MarkPending" method="post" class="me-1">
+                                                    <input type="hidden" name="id" value="@order.InvoiceId" />
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-warning">Pending</button>
+                                                </form>
+                                                <form asp-area="admin" asp-controller="Orders" asp-action="MarkInDelivery" method="post" class="me-1">
+                                                    <input type="hidden" name="id" value="@order.InvoiceId" />
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-info">In Delivery</button>
+                                                </form>
+                                                <form asp-area="admin" asp-controller="Orders" asp-action="MarkCompleted" method="post">
+                                                    <input type="hidden" name="id" value="@order.InvoiceId" />
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-sm btn-outline-success">Completed</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using LapShop.Models;
 using Microsoft.EntityFrameworkCore;
 using LapShop.Bl;
@@ -56,21 +56,66 @@ namespace LapShop.Controllers
         /// - أول 4 فئات
         /// </summary>
         /// <returns>View مع نموذج VmHomePage يحتوي على جميع البيانات</returns>
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId, int page = 1)
         {
             VmHomePage vm = new VmHomePage();
 
-            // تحميل المنتجات بطرق مختلفة (Skip/Take للـ pagination المبسطة)
-            vm.lstAllItems = _itemService.GetAllItemsData(null).Skip(20).Take(20).ToList();
-            vm.lstRecommendedItems = _itemService.GetAllItemsData(null).Skip(60).Take(10).ToList();
-            vm.lstNewItems = _itemService.GetAllItemsData(null).Skip(90).Take(10).ToList();
-            vm.lstFreeDelivry = _itemService.GetAllItemsData(null).Skip(200).Take(10).ToList();
+            var allItems = _itemService.GetAllItemsData(null);
+            int pageSize = 12;
 
-            // تحميل المنزلقات والفئات
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                var filtered = _itemService.GetAllItemsData(categoryId);
+                vm.lstAllItems = filtered
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+            else
+            {
+                vm.lstAllItems = allItems
+                    .OrderByDescending(a => a.CreatedDate)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+
+            vm.lstRecommendedItems = allItems.Take(10).ToList();
+            vm.lstNewItems = allItems.OrderByDescending(a => a.CreatedDate).Take(10).ToList();
+            vm.lstFreeDelivry = allItems.Skip(10).Take(10).ToList();
+
             vm.lstSliders = _sliderService.GetAll();
-            vm.lstCategories = _categoryService.GetAll().Take(4).ToList();
+            vm.lstCategories = _categoryService.GetAll().ToList();
+
+            ViewBag.SelectedCategoryId = categoryId ?? 0;
+            ViewBag.CurrentPage = page;
 
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            if (!string.IsNullOrEmpty(culture))
+            {
+                var cookieValue = Microsoft.AspNetCore.Localization.CookieRequestCultureProvider
+                    .MakeCookieValue(new Microsoft.AspNetCore.Localization.RequestCulture(culture));
+
+                Response.Cookies.Append(
+                    Microsoft.AspNetCore.Localization.CookieRequestCultureProvider.DefaultCookieName,
+                    cookieValue,
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.UtcNow.AddYears(1)
+                    });
+            }
+
+            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return LocalRedirect(returnUrl);
         }
         #endregion
     }

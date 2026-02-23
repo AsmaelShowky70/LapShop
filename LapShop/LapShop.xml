@@ -132,7 +132,7 @@
             <param name="sliderService">خدمة المنزلقات</param>
             <param name="categoryService">خدمة الفئات</param>
         </member>
-        <member name="M:LapShop.Controllers.HomeController.Index">
+        <member name="M:LapShop.Controllers.HomeController.Index(System.Nullable{System.Int32},System.Int32)">
             <summary>
             عرض الصفحة الرئيسية مع جميع البيانات
             تحتوي على:
