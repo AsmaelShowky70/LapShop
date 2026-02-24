@@ -9,20 +9,21 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LapShop.Migrations
+namespace Bl.Bl.Migrations
 {
     [DbContext(typeof(LapShopContext))]
-    [Migration("20221207200627_SettingColums")]
-    partial class SettingColums
+    [Migration("20260224014515_Initial")]
+    partial class Initial
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("LapShop.Models.ApplicationUser", b =>
                 {
@@ -103,10 +104,10 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusinessInfoId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusinessInfoId"));
 
                     b.Property<decimal>("Budget")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("BusinessCardNumber")
                         .HasMaxLength(20)
@@ -132,13 +133,13 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CashTransactionId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CashTransactionId"));
 
                     b.Property<DateTime>("CashDate")
                         .HasColumnType("datetime");
 
                     b.Property<decimal>("CashValue")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -154,7 +155,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -203,7 +204,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -221,7 +222,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -258,14 +259,12 @@ namespace LapShop.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ItemTypeId")
-                        .IsRequired()
+                    b.Property<int>("ItemTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValueSql("((0))");
 
-                    b.Property<int?>("OsId")
-                        .IsRequired()
+                    b.Property<int>("OsId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValueSql("((0))");
@@ -274,14 +273,13 @@ namespace LapShop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
-                    b.Property<int?>("RamSize")
-                        .IsRequired()
+                    b.Property<int>("RamSize")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SalesPrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("ScreenReslution")
                         .HasColumnType("nvarchar(max)");
@@ -315,10 +313,10 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemDiscountId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemDiscountId"));
 
                     b.Property<decimal>("DiscountPercent")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -339,7 +337,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
 
                     b.Property<string>("ImageName")
                         .IsRequired()
@@ -362,7 +360,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemTypeId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemTypeId"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -399,7 +397,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OsId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OsId"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -434,13 +432,63 @@ namespace LapShop.Migrations
                     b.ToTable("TbOs");
                 });
 
+            modelBuilder.Entity("LapShop.Models.TbPages", b =>
+                {
+                    b.Property<int>("PageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PageId"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CurrentState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaDescriptiuon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MetaKeyWord")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PageId");
+
+                    b.ToTable("TbPages");
+                });
+
             modelBuilder.Entity("LapShop.Models.TbPurchaseInvoice", b =>
                 {
                     b.Property<int>("InvoiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
 
                     b.Property<DateTime>("InvoiceDate")
                         .ValueGeneratedOnAdd()
@@ -469,7 +517,7 @@ namespace LapShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("InvoicePrice")
-                        .HasColumnType("decimal(8,4)");
+                        .HasColumnType("decimal(8, 4)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -497,7 +545,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceId"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -547,13 +595,13 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceItemId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceItemId"));
 
                     b.Property<int>("InvoiceId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("InvoicePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -581,7 +629,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -638,7 +686,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderId"));
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -680,7 +728,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierId"));
 
                     b.Property<string>("SupplierName")
                         .IsRequired()
@@ -754,13 +802,13 @@ namespace LapShop.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<int?>("RamSize")
                         .HasColumnType("int");
 
                     b.Property<decimal>("SalesPrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("ScreenReslution")
                         .HasColumnType("nvarchar(max)");
@@ -777,7 +825,9 @@ namespace LapShop.Migrations
                     b.Property<string>("Weight")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToView("VwItems");
+                    b.ToTable((string)null);
+
+                    b.ToView("VwItems", (string)null);
                 });
 
             modelBuilder.Entity("LapShop.Models.VwItemCategories", b =>
@@ -835,7 +885,9 @@ namespace LapShop.Migrations
                     b.Property<string>("Weight")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToView("VwItemCategory");
+                    b.ToTable((string)null);
+
+                    b.ToView("VwItemCategory", (string)null);
                 });
 
             modelBuilder.Entity("LapShop.Models.VwItemCategory", b =>
@@ -861,12 +913,14 @@ namespace LapShop.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("PurchasePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<decimal>("SalesPrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
-                    b.ToView("VwItemCategories");
+                    b.ToTable((string)null);
+
+                    b.ToView("VwItemCategories", (string)null);
                 });
 
             modelBuilder.Entity("LapShop.Models.VwItemsOutOfInvoice", b =>
@@ -877,16 +931,18 @@ namespace LapShop.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal?>("InvoicePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
                     b.Property<string>("ItemName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal?>("PurchasePrice")
-                        .HasColumnType("decimal(8,2)");
+                        .HasColumnType("decimal(8, 2)");
 
-                    b.ToView("VwItemsOutOfInvoices");
+                    b.ToTable((string)null);
+
+                    b.ToView("VwItemsOutOfInvoices", (string)null);
                 });
 
             modelBuilder.Entity("LapShop.Models.VwSalesInvoice", b =>
@@ -915,7 +971,9 @@ namespace LapShop.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToView("VwSalesInvoices");
+                    b.ToTable((string)null);
+
+                    b.ToView("VwSalesInvoices", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -951,7 +1009,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -976,7 +1034,7 @@ namespace LapShop.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");

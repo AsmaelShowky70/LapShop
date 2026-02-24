@@ -121,8 +121,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<LapShopContext>();
-        // EnsureCreated will create database and schema if they do not exist.
-        context.Database.EnsureCreated();
+        // Apply pending migrations and create tables according to migrations
+        context.Database.Migrate();
     }
     catch (Exception ex)
     {
