@@ -21,6 +21,8 @@
 
 **LapShop** is a professional-grade, full-stack e-commerce platform built with **ASP.NET Core 10.0** and **Entity Framework Core**. This project demonstrates enterprise-level software architecture, SOLID principles, clean code practices, and industry best practices. It's designed as a reference implementation for building scalable, maintainable web applications.
 
+**Live Demo:** https://lapshope.runasp.net/
+
 ### 🎯 Key Characteristics
 - ✅ **Production-Ready** - Deployed to production standards
 - ✅ **Well-Documented** - 100% code documentation

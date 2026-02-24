@@ -114,6 +114,23 @@ builder.Services.ConfigureApplicationCookie(options =>
 #region Application Builder - بناء التطبيق وتكوين الـ Pipeline
 var app = builder.Build();
 
+// Ensure database is created (create tables based on the EF model)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<LapShopContext>();
+        // EnsureCreated will create database and schema if they do not exist.
+        context.Database.EnsureCreated();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating the database.");
+    }
+}
+
 // التعامل مع الأخطاء والأمان
 if (!app.Environment.IsDevelopment())
 {
