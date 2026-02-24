@@ -50,6 +50,8 @@ namespace LapShop.Bl
                 {
                     category.CreatedBy = "1";
                     category.CreatedDate = DateTime.Now;
+                    // ensure new categories are active so they appear in lists
+                    category.CurrentState = 1;
                     context.TbCategories.Add(category);
                 }
                 else
@@ -122,6 +124,8 @@ namespace LapShop.Bl
                 {
                     category.CreatedBy = "1";
                     category.CreatedDate = DateTime.Now;
+                    // ensure new categories are active so they appear in lists
+                    category.CurrentState = 1;
                     context.TbCategories.Add(category);
                 }
                 else

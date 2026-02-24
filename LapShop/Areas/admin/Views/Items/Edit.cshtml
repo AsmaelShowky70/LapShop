@@ -1,4 +1,4 @@
-﻿@model TbItem
+@model TbItem
 
 
 <div class="content-wrapper">
@@ -11,8 +11,10 @@
             </ol>
         </nav>
     </div>
-    <form class="forms-sample" method="post" enctype="multipart/form-data"
-          asp-controller="Items" asp-action="Save" role="form">
+    <form class="forms-sample" method="post" enctype="multipart/form-data" asp-controller="Items" asp-action="Save"
+        role="form">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="row">
 
             <div class="col-md-6 grid-margin stretch-card">
@@ -28,37 +30,43 @@
                         <input asp-for="ImageName" type="hidden" />
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblItemName</label>
-                            <input asp-for="ItemName" type="text" class="form-control" placeholder="@ResAdmin.lblItemName">
+                            <input asp-for="ItemName" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblItemName">
                             <span asp-validation-for="ItemName"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblCategoryName</label>
-                            <select class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.lstCategories,"CategoryId","CategoryName"))"></select>
+                            <select class="form-control" asp-for="CategoryId"
+                                asp-items="@(new SelectList(ViewBag.lstCategories, "CategoryId", "CategoryName", Model.CategoryId))"></select>
                             <span asp-validation-for="CategoryId"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblItemType</label>
-                            <select class="form-control" asp-for="ItemTypeId" asp-items="@(new SelectList(ViewBag.lstItemTypes,"ItemTypeId","ItemTypeName"))"></select>
+                            <select class="form-control" asp-for="ItemTypeId"
+                                asp-items="@(new SelectList(ViewBag.lstItemTypes, "ItemTypeId", "ItemTypeName", Model.ItemTypeId))"></select>
                             <span asp-validation-for="ItemTypeId"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblOs</label>
-                            <select class="form-control" asp-for="OsId" asp-items="@(new SelectList(ViewBag.lstOs,"OsId","OsName"))"></select>
-                            <span asp-validation-for="ItemTypeId"></span>
+                            <select class="form-control" asp-for="OsId"
+                                asp-items="@(new SelectList(ViewBag.lstOs, "OsId", "OsName", Model.OsId))"></select>
+                            <span asp-validation-for="OsId"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblSalesPrice</label>
-                            <input asp-for="SalesPrice" type="text" class="form-control" placeholder="@ResAdmin.lblSalesPrice">
+                            <input asp-for="SalesPrice" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblSalesPrice">
                             <span asp-validation-for="SalesPrice"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblPurchasePrice</label>
-                            <input asp-for="PurchasePrice" type="text" class="form-control" placeholder="@ResAdmin.lblPurchasePrice">
+                            <input asp-for="PurchasePrice" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblPurchasePrice">
                             <span asp-validation-for="PurchasePrice"></span>
                         </div>
 
@@ -72,13 +80,14 @@
                             <label for="exampleInputUsername1">
                                 @ResAdmin.lblImage
                             </label>
-                            <input asp-for="ImageName" type="file" name="Files" multiple
-                                   class="form-control" placeholder="@ResAdmin.lblImage"
-                                   onchange="Upload.UploadDefaultImg(event)" accept=".jpg, .jpeg, .png, ,.gif">
+                            <input type="file" name="Files" multiple class="form-control"
+                                placeholder="@ResAdmin.lblImage" onchange="Upload.UploadDefaultImg(event)"
+                                accept=".jpg, .jpeg, .png, ,.gif">
 
                         </div>
 
-                        <button type="submit" formmethod="post" class="btn btn-gradient-primary me-2">@ResGeneral.lblSave</button>
+                        <button type="submit" formmethod="post"
+                            class="btn btn-gradient-primary me-2">@ResGeneral.lblSave</button>
                         <button class="btn btn-light">@ResGeneral.lblNew</button>
 
                     </div>
@@ -99,31 +108,36 @@
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblProcessor</label>
-                            <input asp-for="Processor" type="text" class="form-control" placeholder="@ResAdmin.lblProcessor">
+                            <input asp-for="Processor" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblProcessor">
                             <span class="label-danger" asp-validation-for="Processor"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblHardDisk</label>
-                            <input asp-for="HardDisk" type="text" class="form-control" placeholder="@ResAdmin.lblHardDisk">
+                            <input asp-for="HardDisk" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblHardDisk">
                             <span class="label-danger" asp-validation-for="HardDisk"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblRamSize</label>
-                            <input asp-for="RamSize" type="number" class="form-control" placeholder="@ResAdmin.lblRamSize">
+                            <input asp-for="RamSize" type="number" class="form-control"
+                                placeholder="@ResAdmin.lblRamSize">
                             <span class="label-danger" asp-validation-for="RamSize"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblScreenReslution</label>
-                            <input asp-for="ScreenReslution" type="text" class="form-control" placeholder="@ResAdmin.lblScreenReslution">
+                            <input asp-for="ScreenReslution" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblScreenReslution">
                             <span class="label-danger" asp-validation-for="ScreenReslution"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputUsername1">@ResAdmin.lblScreenSize</label>
-                            <input asp-for="ScreenSize" type="text" class="form-control" placeholder="@ResAdmin.lblScreenSize">
+                            <input asp-for="ScreenSize" type="text" class="form-control"
+                                placeholder="@ResAdmin.lblScreenSize">
                             <span class="label-danger" asp-validation-for="ScreenSize"></span>
                         </div>
                         <span id="tbImgName"></span>
@@ -143,7 +157,7 @@
     {
     <script>
         var Upload = {
-            UploadDefaultImg: function(e) {
+            UploadDefaultImg: function (e) {
                 const file = e.target.files[0];
                 const reader = new FileReader();
                 reader.onloadend = () => {

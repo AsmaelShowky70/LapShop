@@ -123,6 +123,43 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<LapShopContext>();
         // Apply pending migrations and create tables according to migrations
         context.Database.Migrate();
+        // Seed default Item Types and OS values for admin dropdowns if empty
+        try
+        {
+            if (!context.TbItemTypes.Any())
+            {
+                var now = DateTime.Now;
+                context.TbItemTypes.AddRange(
+                    new TbItemType { ItemTypeName = "Laptop", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Notebook", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Ultrabook", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Gaming", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Convertible (2-in-1)", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Chromebook", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbItemType { ItemTypeName = "Workstation", CreatedBy = "system", CreatedDate = now, CurrentState = 1 }
+                );
+            }
+
+            if (!context.TbOs.Any())
+            {
+                var now = DateTime.Now;
+                context.TbOs.AddRange(
+                    new TbO { OsName = "Windows 11", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbO { OsName = "Windows 10", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbO { OsName = "Linux (Ubuntu)", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbO { OsName = "Linux (Fedora)", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbO { OsName = "macOS Ventura", CreatedBy = "system", CreatedDate = now, CurrentState = 1 },
+                    new TbO { OsName = "macOS Monterey", CreatedBy = "system", CreatedDate = now, CurrentState = 1 }
+                );
+            }
+
+            context.SaveChanges();
+        }
+        catch (Exception exSeed)
+        {
+            var loggerSeed = services.GetRequiredService<ILogger<Program>>();
+            loggerSeed.LogWarning(exSeed, "Seeding default ItemTypes/Os failed.");
+        }
     }
     catch (Exception ex)
     {

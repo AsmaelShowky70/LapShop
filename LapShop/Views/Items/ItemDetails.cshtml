@@ -32,24 +32,43 @@
                     <div class="row">
                         <div class="col-12 p-0">
                             <div class="slider-right-nav">
-                                @foreach (var item in Model.lstItemImages)
+                                @if (Model.lstItemImages != null && Model.lstItemImages.Any())
+                                {
+                                    foreach (var item in Model.lstItemImages)
+                                    {
+                                        <div>
+                                            <img src="~/Uploads/Items/@item.ImageName" alt=""
+                                                 class="img-fluid blur-up lazyload">
+                                        </div>
+                                    }
+                                }
+                                else if (!string.IsNullOrEmpty(Model.Item.ImageName))
                                 {
                                     <div>
-                                        <img src="~/Uploads/Items/@item.ImageName" alt=""
-                                         class="img-fluid blur-up lazyload">
+                                        <img src="~/Uploads/Items/@Model.Item.ImageName" alt=""
+                                             class="img-fluid blur-up lazyload">
                                     </div>
                                 }
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-10 col-xs-12 order-up">
                     <div class="product-right-slick">
-                        @foreach (var item in Model.lstItemImages)
+                        @if (Model.lstItemImages != null && Model.lstItemImages.Any())
+                        {
+                            foreach (var item in Model.lstItemImages)
+                            {
+                                <div>
+                                    <img src="~/Uploads/Items/@item.ImageName" alt="@Model.Item.ItemName"
+                                         class="img-fluid blur-up lazyload image_zoom_cls-0">
+                                </div>
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(Model.Item.ImageName))
                         {
                             <div>
-                                <img src="~/Uploads/Items/@item.ImageName" alt="@Model.Item.ItemName"
+                                <img src="~/Uploads/Items/@Model.Item.ImageName" alt="@Model.Item.ItemName"
                                      class="img-fluid blur-up lazyload image_zoom_cls-0">
                             </div>
                         }

@@ -50,6 +50,8 @@ namespace LapShop.Bl
                 {
                     itemType.CreatedBy = "1";
                     itemType.CreatedDate = DateTime.Now;
+                    // ensure new item types are active so they appear in lists
+                    itemType.CurrentState = 1;
                     context.TbItemTypes.Add(itemType);
                 }
                 else

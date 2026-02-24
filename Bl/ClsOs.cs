@@ -50,6 +50,8 @@ namespace LapShop.Bl
                 {
                     os.CreatedBy = "1";
                     os.CreatedDate = DateTime.Now;
+                    // ensure new OS entries are active so they appear in lists
+                    os.CurrentState = 1;
                     context.TbOs.Add(os);
                 }
                 else
