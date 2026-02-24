@@ -1,4 +1,4 @@
-﻿@inject SignInManager<ApplicationUser> sinInManager
+@inject SignInManager<ApplicationUser> sinInManager
 @{
     var isArabic = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
 }
@@ -82,7 +82,7 @@
         }
     </style>
 
-    @RenderSection("Styles",required:false);
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>

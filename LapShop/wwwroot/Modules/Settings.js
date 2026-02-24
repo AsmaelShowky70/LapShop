@@ -1,6 +1,6 @@
 var ClsSettings = {
     GetAll: function () {
-        Helper.AjaxCallGet("https://localhost:7159/api/Setting", {}, "json",
+        Helper.AjaxCallGet("https://lapshope.runasp.net/api/Setting", {}, "json",
             function (data) {
                 console.log(data);
                 $("#lnkFacebook").attr("href", data.facebookLink);

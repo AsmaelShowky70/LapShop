@@ -29,7 +29,15 @@ builder.Services.AddCors(options =>
 
 #region Entity Framework - قاعدة البيانات والـ Identity
 builder.Services.AddDbContext<LapShopContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null);
+        }));
 
 // تكوين ASP.NET Core Identity (المصادقة والتفويض)
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
