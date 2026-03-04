@@ -40,24 +40,57 @@ var ClsItems = {
             }, function () { });
     },
     DrawItem: function (item) {
-        var data = "<div class='col-xl-3 col-6 col-grid-box'>";
+        var isArabic = document.documentElement.lang === 'ar';
         var detailsUrl = "/Items/ItemDetails/" + item.itemId;
         var imageUrl = "/Uploads/Items/" + item.imageName;
         var itemName = item.itemName || "";
+        var salesPrice = item.salesPrice;
 
-        data += "<div class='product-box'><div class='img-wrapper'>";
-        data += "<div class='front'><a href='" + detailsUrl + "'><img src='" + imageUrl + "' class='img-fluid blur-up lazyload bg-img' alt='" + itemName + "'></a></div>";
-        data += "<div class='back'><a href='" + detailsUrl + "'><img src='" + imageUrl + "' class='img-fluid blur-up lazyload bg-img' alt='" + itemName + "'></a></div>";
-        data += "<div class='cart-info cart-wrap'>";
-        data += "<a href='/Order/AddToCart?itemId=" + item.itemId + "' title='Add to cart'><i class='ti-shopping-cart'></i></a>";
-        data += "<a href='javascript: void (0)' title='Add to Wishlist'><i class='ti-heart' aria-hidden='true'></i></a>";
-        data += "</div></div>";
-        data += "<div class='product-detail'><div class='rating'> <i class='fa fa-star'></i> <i class='fa fa-star'></i> <i class='fa fa-star'></i>";
-        data += "<i class='fa fa-star'></i> <i class='fa fa-star'></i></div>";
-        data += "<a href='" + detailsUrl + "'><h6>" + itemName + "</h6></a><p> </p>";
-        data += "<h4>$" + item.salesPrice + "</h4>";
-        data += "<ul class='color-variant'><li class='bg-light0'></li><li class='bg-light1'></li><li class='bg-light2'></li></ul> </div> </div> </div>";
-        return data;
+        // Date parsing for "New" badge (simplified)
+        var isNew = false;
+        if (item.createdDate) {
+            var createdDate = new Date(item.createdDate);
+            var thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            if (createdDate >= thirtyDaysAgo) {
+                isNew = true;
+            }
+        }
+
+        var html = '<div class="col-xl-3 col-6 col-grid-box mb-4">';
+        html += '<div class="product-card h-100">';
+        html += '<div class="img-wrapper">';
+
+        if (isNew) {
+            html += '<span class="badge-custom badge-new">' + (isArabic ? "جديد" : "New") + '</span>';
+        }
+
+        html += '<a href="' + detailsUrl + '">';
+        html += '<img src="' + imageUrl + '" alt="' + itemName + '" loading="lazy">';
+        html += '</a>';
+        html += '</div>';
+
+        html += '<div class="product-detail">';
+        html += '<a href="' + detailsUrl + '" class="text-decoration-none">';
+        html += '<h6>' + itemName + '</h6>';
+        html += '</a>';
+
+        html += '<div class="d-flex justify-content-between align-items-center mt-2 mb-3">';
+        html += '<span class="price">' + salesPrice + ' ' + (isArabic ? "ج.م" : "EGP") + '</span>';
+        html += '<div class="rating small text-warning">';
+        html += '<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<a href="/Order/AddToCart?itemId=' + item.itemId + '" class="btn-add-to-cart">';
+        html += '<i class="fa fa-shopping-cart"></i> ';
+        html += (isArabic ? "أضف للسلة" : "Add to Cart");
+        html += '</a>';
+
+        html += '</div>'; // End product-detail
+        html += '</div>'; // End product-card
+        html += '</div>'; // End col
+
+        return html;
     }
 }
-

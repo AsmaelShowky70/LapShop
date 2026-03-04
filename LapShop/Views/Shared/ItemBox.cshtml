@@ -2,33 +2,40 @@
 
 @{
     var isArabic = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ar";
+    // Mock logic for "New" badge (e.g., created in last 30 days)
+    var isNew = (DateTime.Now - Model.CreatedDate).TotalDays <= 30;
 }
 
-<div class="img-wrapper">
-    <div class="front">
+<div class="product-card h-100">
+    <div class="img-wrapper">
+        @if (isNew)
+        {
+            <span class="badge-custom badge-new">@(isArabic ? "جديد" : "New")</span>
+        }
         <a asp-controller="Items" asp-action="ItemDetails" asp-route-id="@Model.ItemId">
-            <img src="~/Uploads/Items/@Model.ImageName"
-                 class="img-fluid blur-up lazyload bg-img" alt="@Model.ItemName">
+            <img src="~/Uploads/Items/@Model.ImageName" alt="@Model.ItemName" loading="lazy">
         </a>
     </div>
-    <div class="cart-info cart-wrap">
-        <a asp-controller="Order" asp-action="AddToCart"
-           asp-route-itemId="@Model.ItemId"
-           title="@(isArabic ? "إضافة إلى المفضلة" : "Add to wishlist")" tabindex="0">
-            <i class="ti-heart" aria-hidden="true"></i>
+    
+    <div class="product-detail">
+        <a asp-controller="Items" asp-action="ItemDetails" asp-route-id="@Model.ItemId" class="text-decoration-none">
+            <h6>@Model.ItemName</h6>
+        </a>
+        
+        <div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+            <span class="price">@Model.SalesPrice @(isArabic ? "ج.م" : "EGP")</span>
+            <div class="rating small">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </div>
+        </div>
+
+        <a asp-controller="Order" asp-action="AddToCart" asp-route-itemId="@Model.ItemId" class="btn-add-to-cart">
+            <i class="fa fa-shopping-cart"></i>
+            @(isArabic ? "أضف للسلة" : "Add to Cart")
         </a>
     </div>
-    <a asp-controller="Order" asp-action="AddToCart"
-       asp-route-itemId="@Model.ItemId" class="add-button">
-        @(isArabic ? "أضف إلى السلة" : "add to cart")
-    </a>
-</div>
-<div class="product-detail">
-    <div class="rating">
-        <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-    </div>
-    <a asp-controller="Items" asp-action="ItemDetails" asp-route-id="@Model.ItemId">
-        <h6>@Model.ItemName</h6>
-    </a>
-    <h4>@Model.SalesPrice @(isArabic ? "جنيه" : "EGP")</h4>
 </div>
